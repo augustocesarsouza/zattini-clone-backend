@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Zattini.Application.Services;
 using Zattini.Application.Services.Interfaces;
+using Zattini.Domain.Repositories;
+using Zattini.Infra.Data.Context;
+using Zattini.Infra.Data.Repositories;
 
 namespace Zattini.Infra.IoC
 {
@@ -10,21 +14,22 @@ namespace Zattini.Infra.IoC
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //var connectionString = configuration["ConnectionStrings:DefaultConnection"];
-            //var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration["ConnectionStrings:DefaultConnection"];
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration["ConnectionStrings:DefaultConnection"];
             //var connectionString = configuration.GetConnectionString("Default");
+
             //services.AddAutoMapper(typeof(DomainToDtoMapping));
             //services.AddAutoMapper(typeof(DtoToDomainMapping));
 
-            //services.AddDbContext<ApplicationDbContext>(
-            //      options => options.UseNpgsql(connectionString)); 
-            // Server=ms-sql-server; quando depender dele no Docker-Compose
+            services.AddDbContext<ApplicationDbContext>(
+                  options => options.UseNpgsql(connectionString));
+            //Server = ms - sql - server; quando depender dele no Docker - Compose
 
-            //services.AddStackExchangeRedisCache(redis =>
-            //{
-            //    redis.Configuration = "localhost:7006";
-            //});
+            services.AddStackExchangeRedisCache(redis =>
+            {
+                redis.Configuration = "localhost:7006";
+            });
 
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
 

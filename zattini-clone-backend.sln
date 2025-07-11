@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zattini.Infra.IoC", "Zattini.Infra.IoC\Zattini.Infra.IoC.csproj", "{8C4D6DF7-A27F-4CA6-8BB7-12FE459DE931}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zattini.Api", "Zattini.Api\Zattini.Api.csproj", "{3BA5A56E-CDF2-43CE-A192-784EF71C3045}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C4D6DF7-A27F-4CA6-8BB7-12FE459DE931} = {8C4D6DF7-A27F-4CA6-8BB7-12FE459DE931}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

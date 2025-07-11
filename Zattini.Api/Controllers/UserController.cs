@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Zattini.Application.DTOs;
 
 namespace Zattini.Api.Controllers
 {
@@ -23,7 +24,7 @@ namespace Zattini.Api.Controllers
 
             //return BadRequest(result);
 
-            return Ok("tudo certo" + userId);
+            return Ok(new UserDTO("seila"));
         }
     }
 }

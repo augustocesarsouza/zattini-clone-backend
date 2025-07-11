@@ -1,6 +1,8 @@
 
 using FluentValidation;
-using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 using Zattini.Infra.IoC;
 
@@ -28,44 +30,44 @@ builder.Services.AddMvc().AddJsonOptions(options =>
 
 });
 
-//var frontEndUrl = Environment.GetEnvironmentVariable("FRONTEND_URL") ?? builder.Configuration["FRONTEND:URL"];
+var frontEndUrl = Environment.GetEnvironmentVariable("FRONTEND_URL") ?? builder.Configuration["FRONTEND:URL"];
 
-//if (frontEndUrl != null)
-//{
-//    builder.Services.AddCors(options =>
-//    {
-//        options.AddPolicy("CorsPolity", builder =>
-//        {
-//            builder.WithOrigins(frontEndUrl)
-//            .AllowAnyMethod()
-//            .AllowAnyHeader()
-//            .AllowCredentials();
-//        });
-//    });
-//}
+if (frontEndUrl != null)
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("CorsPolity", builder =>
+        {
+            builder.WithOrigins(frontEndUrl)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+    });
+}
 
-//var keyJwtBearerSecret = Environment.GetEnvironmentVariable("KEY_JWT") ?? builder.Configuration["Key:Jwt"];
-//if (keyJwtBearerSecret != null)
-//{
-//    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyJwtBearerSecret));
+var keyJwtBearerSecret = Environment.GetEnvironmentVariable("KEY_JWT") ?? builder.Configuration["Key:Jwt"];
+if (keyJwtBearerSecret != null)
+{
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyJwtBearerSecret));
 
-//    builder.Services.AddAuthentication(opt =>
-//    {
-//        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    }).AddJwtBearer(options =>
-//    {
-//        options.RequireHttpsMetadata = false;
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            ValidateLifetime = true,
-//            IssuerSigningKey = key,
-//            ValidateAudience = false,
-//            ValidateIssuer = false
-//        };
-//    });
-//}
+    builder.Services.AddAuthentication(opt =>
+    {
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            IssuerSigningKey = key,
+            ValidateAudience = false,
+            ValidateIssuer = false
+        };
+    });
+}
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -92,7 +94,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    //await DataHelper.ManageDataAsync(services);
+    await DataHelper.ManageDataAsync(services);
 }
 
 app.Run();
