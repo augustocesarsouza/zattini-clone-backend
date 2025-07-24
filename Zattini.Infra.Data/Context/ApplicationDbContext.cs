@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Zattini.Domain.Entities;
 
 namespace Zattini.Infra.Data.Context
 {
@@ -10,10 +11,12 @@ namespace Zattini.Infra.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
-            //Users = Set<User>();
+            Users = Set<User>();
+            UserAddress = Set<UserAddress>();
         }
 
-        //public DbSet<User> Users { get; private set; }
+        public DbSet<User> Users { get; private set; }
+        public DbSet<UserAddress> UserAddress { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

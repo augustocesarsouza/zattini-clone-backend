@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using Zattini.Api.Authentication;
+using Zattini.Api.Controllers;
+using Zattini.Api.ControllersInterface;
+using Zattini.Domain.Authentication;
 using Zattini.Infra.IoC;
 
 ValidatorOptions.Global.LanguageManager.Culture = System.Globalization.CultureInfo.InvariantCulture;
@@ -16,8 +20,8 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddScoped<ICurrentUser, CurrentUser>();
-//builder.Services.AddScoped<IBaseController, BaseController>();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddScoped<IBaseController, BaseController>();
 
 if (builder.Environment.IsDevelopment())
 {

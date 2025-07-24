@@ -1,11 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using brevo_csharp.Api;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Zattini.Application.DTOs.Validations.Interfaces;
+using Zattini.Application.DTOs.Validations.UserAddressValidator;
+using Zattini.Application.DTOs.Validations.UserValidator;
+using Zattini.Application.Mappings;
 using Zattini.Application.Services;
 using Zattini.Application.Services.Interfaces;
+using Zattini.Domain.Authentication;
 using Zattini.Domain.Repositories;
+using Zattini.Infra.Data.Authentication;
 using Zattini.Infra.Data.Context;
 using Zattini.Infra.Data.Repositories;
+using Zattini.Infra.Data.UtilityExternal;
+using Zattini.Infra.Data.UtilityExternal.Interface;
 
 namespace Zattini.Infra.IoC
 {
@@ -17,8 +26,8 @@ namespace Zattini.Infra.IoC
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration["ConnectionStrings:DefaultConnection"];
             //var connectionString = configuration.GetConnectionString("Default");
 
-            //services.AddAutoMapper(typeof(DomainToDtoMapping));
-            //services.AddAutoMapper(typeof(DtoToDomainMapping));
+            services.AddAutoMapper(typeof(DomainToDtoMapping));
+            services.AddAutoMapper(typeof(DtoToDomainMapping));
 
             services.AddDbContext<ApplicationDbContext>(
                   options => options.UseNpgsql(connectionString));
@@ -30,46 +39,34 @@ namespace Zattini.Infra.IoC
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddAutoMapper(typeof(DomainToDtoMapping));
+            services.AddAutoMapper(typeof(DomainToDtoMapping));
 
             //services.AddSingleton<ICodeRandomDictionary, CodeRandomDictionary>();
             //services.AddSingleton<IQuantityAttemptChangePasswordDictionary, QuantityAttemptChangePasswordDictionary>();
 
-            //services.AddScoped<ITransactionalEmailsApi, TransactionalEmailsApi>();
+            services.AddScoped<ITransactionalEmailsApi, TransactionalEmailsApi>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
-            //services.AddScoped<IUserManagementService, UserManagementService>();
-            //services.AddScoped<IUserCreateAccountFunction, UserCreateAccountFunction>();
-            //services.AddScoped<IAddressService, AddressService>();
-            //services.AddScoped<IProductService, ProductService>();
-            //services.AddScoped<ITokenGeneratorUser, TokenGeneratorUser>();
-            //services.AddScoped<ICloudinaryUti, CloudinaryUti>();
-            //services.AddScoped<ICacheRedisUti, CacheRedisUti>();
-            //services.AddScoped<ISendEmailBrevo, SendEmailBrevo>();
-            //services.AddScoped<ISendEmailUser, SendEmailUser>();
-            //services.AddScoped<ITransactionalEmailApiUti, TransactionalEmailApiUti>();
-            //services.AddScoped<IProductAdditionalInfoService, ProductAdditionalInfoService>();
-            //services.AddScoped<IUserProductLikeService, UserProductLikeService>();
-            //services.AddScoped<IProductCommentService, ProductCommentService>();
-            //services.AddScoped<IProductCommentLikeService, ProductCommentLikeService>();
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IUserCreateAccountFunction, UserCreateAccountFunction>();
+            services.AddScoped<IUserAddressService, UserAddressService>();
+            services.AddScoped<ICloudinaryUti, CloudinaryUti>();
+            services.AddScoped<ICacheRedisUti, CacheRedisUti>();
+            services.AddScoped<ISendEmailBrevo, SendEmailBrevo>();
+            services.AddScoped<ISendEmailUser, SendEmailUser>();
+            services.AddScoped<ITransactionalEmailApiUti, TransactionalEmailApiUti>();
+            services.AddScoped<ITokenGeneratorUser, TokenGeneratorUser>();
 
-            //services.AddScoped<IUserSendCodeEmailDTOValidator, UserSendCodeEmailDTOValidator>();
-            //services.AddScoped<IUserCreateDTOValidator, UserCreateDTOValidator>();
+            services.AddScoped<IUserAddressCreateDTOValidator, UserAddressCreateDTOValidator>();
+            services.AddScoped<IUserCreateDTOValidator, UserCreateDTOValidator>();
             //services.AddScoped<IUserUpdateProfileDTOValidator, UserUpdateProfileDTOValidator>();
-            //services.AddScoped<IChangePasswordUserDTOValidator, ChangePasswordUserDTOValidator>();
-            //services.AddScoped<IUserChangePasswordTokenDTOValidator, UserChangePasswordTokenDTOValidator>();
-            //services.AddScoped<IAddressCreateDTOValidator, AddressCreateDTOValidator>();
-            //services.AddScoped<IAddressUpdateDTOValidator, AddressUpdateDTOValidator>();
-            //services.AddScoped<IProductCreateDTOValidator, ProductCreateDTOValidator>();
-            //services.AddScoped<IUserProductLikeCreateDTOValidator, UserProductLikeCreateDTOValidator>();
-            //services.AddScoped<IProductCommentCreateDTOValidator, ProductCommentCreateDTOValidator>();
-            //services.AddScoped<IProductAdditionalInfoDTOValidator, ProductAdditionalInfoDTOValidator>();
-            //services.AddScoped<IProductCommentLikeCreateDTOValidator, ProductCommentLikeCreateDTOValidator>();
 
             return services;
         }
