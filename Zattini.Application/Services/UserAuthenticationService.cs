@@ -86,7 +86,7 @@ namespace Zattini.Application.Services
                     return ResultService.Ok(new UserLoginDTO(true, userReturnToFrontend));
                 }
 
-                return ResultService.Fail(new UserLoginDTO(false, userReturnToFrontend));
+                return ResultService.Ok(new UserLoginDTO(false, userReturnToFrontend));
             }
             catch(Exception ex)
             {

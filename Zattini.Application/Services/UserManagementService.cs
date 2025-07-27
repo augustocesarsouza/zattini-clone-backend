@@ -5,7 +5,6 @@ using Zattini.Application.Services.Interfaces;
 using Zattini.Domain.Entities;
 using Zattini.Domain.Repositories;
 using Zattini.Infra.Data.CloudinaryConfigClass;
-using Zattini.Infra.Data.Repositories;
 using Zattini.Infra.Data.UtilityExternal.Interface;
 
 namespace Zattini.Application.Services
@@ -112,7 +111,6 @@ namespace Zattini.Application.Services
                     return ResultService.Fail<CreateUserDTO>("error when create user null value");
 
                 userAddressDTO.SetUserId(idUser);
-                // nao sei oque fazer amanha seila continuar o frontend ou ver como está a criação e tal, depois login
 
                 Guid idUserAddress = Guid.NewGuid();
                 var userAddress = new UserAddress(idUserAddress, userAddressDTO.Cep, userAddressDTO.TypeAddress,

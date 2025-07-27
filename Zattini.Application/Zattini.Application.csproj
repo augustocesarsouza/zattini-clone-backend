@@ -27,8 +27,4 @@
     <ProjectReference Include="..\Zattini.Infra.Data\Zattini.Infra.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ServicesTests\" />
-  </ItemGroup>
-
 </Project>
