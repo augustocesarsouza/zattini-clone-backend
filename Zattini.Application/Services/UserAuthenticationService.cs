@@ -37,7 +37,7 @@ namespace Zattini.Application.Services
                 var user = await _userRepository.GetUserInfoToLogin(email);
 
                 if (user == null)
-                    return ResultService.Fail(new UserLoginDTO(false, new UserDTO()));
+                    return ResultService.Ok(new UserLoginDTO(false, new UserDTO()));
 
                 var passwordHash = user.GetPasswordHash();
                 var salt = user.GetSalt();
